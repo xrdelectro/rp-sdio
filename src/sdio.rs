@@ -884,11 +884,11 @@ impl<'a, DmaCh: SingleChannelDma, P: PIOExt> Sdio4bit<'a, DmaCh, P> {
                 // Bit 21 is the 1.2v support bit, 20 is the pcie support
                 //                                   4444 4444 3333 3333  3322 2222 2222 1111
                 //                                   7654 3210 9876 5432  1098 7654 3210 9876
-                let supports_1p2v = (resp_buf[0] & 0x0000_0000_0000_0000__0000_0000_0010_0000) > 0;
-                let supports_pcie = (resp_buf[0] & 0x0000_0000_0000_0000__0000_0000_0001_0000) > 0;
+                let supports_1p2v = (resp_buf[0] & 0b0000_0000_0000_0000__0000_0000_0010_0000) > 0;
+                let supports_pcie = (resp_buf[0] & 0b0000_0000_0000_0000__0000_0000_0001_0000) > 0;
 
                 // Verify the correct voltage is in use
-                let voltage = (resp_buf[0] & 0x0000_0000_0000_0000__0000_0000_0000_1111) as u8;
+                let voltage = (resp_buf[0] & 0b0000_0000_0000_0000__0000_0000_0000_1111) as u8;
 
                 if voltage != 0b0001 {
                     return Err(SdioError::BadVoltage { bad_volt: voltage });
